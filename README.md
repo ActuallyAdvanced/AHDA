@@ -29,4 +29,8 @@ We’re excited to bring AHDA to life by late 2024. Stay tuned for upcoming upda
 
 ---
 
+
+External Programms required
+-pytesseract
+
 **Stay connected and be among the first to experience AHDA!**
