@@ -39,6 +39,7 @@ We’re thrilled to launch AHDA in late 2024! Sign up for **beta testing** and s
 To run AHDA, you’ll need:
 - **pytesseract** for image processing
 - **Python** (latest version)
+- **Node.JS**
 - **ngrok** for server hosting
 
 **Don’t miss out on the future of digital assistance!**
