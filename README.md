@@ -30,6 +30,16 @@ https://github.com/user-attachments/assets/984ba96d-ad03-4097-9d47-fe8af3b863b8
 
 ---
 
+## Installation Guide 🛠️
+
+1. **Set Up the Server**:  
+   Follow the [Server Installation Guide](https://github.com/ActuallyAdvanced/AHDA/blob/main/Documentation/install_server.MD) for detailed steps.
+
+2. **Set Up the Client**:  
+   Complete the [Client Installation Guide](https://github.com/ActuallyAdvanced/AHDA/blob/main/Documentation/install_client.MD) to get the client running.
+
+---
+
 ## Stay Tuned 🔮
 We’re thrilled to launch AHDA in late 2024! Sign up for **beta testing** and stay connected for exciting updates.
 
