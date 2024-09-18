@@ -7,7 +7,7 @@ https://github.com/user-attachments/assets/984ba96d-ad03-4097-9d47-fe8af3b863b8
 
 **Meet AHDA** – your future-proof, voice-controlled **Open Source** digital assistant. AHDA integrates cutting-edge AI to help you manage your computer effortlessly from anywhere in the world, all through a sleek web interface.
 
-[**Beta testing**](https://id2zv8k28gx.typeform.com/to/sbPF017g)
+<div data-tf-live="01J81FMZ513CW7BJY53NA8T5TV"></div><script src="//embed.typeform.com/next/embed.js"></script>
 
 ---
 
