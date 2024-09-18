@@ -1,39 +1,43 @@
+
 # AHDA: Actually Helpful Digital Assistant 🌐🗣️
 
-![AHDA Image](https://i.imgur.com/gcKWxLi.png)
+https://github.com/user-attachments/assets/984ba96d-ad03-4097-9d47-fe8af3b863b8
 
 ### Coming in Late 2024 🚀
 
-**Meet AHDA** – your future-proof, voice-controlled digital assistant. AHDA supports a wide range of optional features to help you manage your computer effortlessly through a web interface!
+**Meet AHDA** – your future-proof, voice-controlled **Open Source** digital assistant. AHDA integrates cutting-edge AI to help you manage your computer effortlessly from anywhere in the world, all through a sleek web interface.
 
 ---
 
 ## Features ✨
-- 🌍 **Remote Control**: Manage your computer from anywhere in the world via a web-based interface.
-- 🎤 **Voice Activation**: Issue commands with your voice for hands-free control.
-- 📁 **File Sending**: Seamlessly send files to your desktop through the web interface.
-- 🧠 **Smart Automation**: Easily automate tasks, manage schedules, and interact with apps.
-- 🔒 **Secure Access**: Stay worry-free with encrypted communication and data protection.
-- 🔧 **Open Source & Easy Setup**: Completely open source and super easy to set up in minutes!
+- 🌍 **Remote Control**: Manage your PC from anywhere via a web interface.
+- 🎤 **Voice Activation**: Issue hands-free voice commands for total control.
+- 💼 **AI-Powered Automation**: Let AHDA handle complex tasks:
+  - Transfer files between devices
+  - Browse the web autonomously
+  - Manage documents effortlessly
+  - Build full development projects
+  - Send emails, and much more...
 
 ---
 
 ## How It Works 🛠️
-AHDA is designed to support you in a variety of tasks depending on your needs:
 
-1. **Remote Control**: Use the AHDA web app from any device to control your desktop remotely.
-2. **Voice Commands**: Control your computer using voice commands through the web interface (optional).
-3. **File Transfer**: Send files to your desktop from anywhere via the web interface (optional).
-4. **Automation & Apps**: Automate tasks and interact with applications easily.
-
----
-
-## Coming Soon 🔮
-We’re excited to bring AHDA to life by late 2024. Stay tuned for upcoming updates and don’t miss out on beta testing opportunities!
+1. **Connect**: Access AHDA via our website or your own hosted instance. Scan the QR code displayed on your PC.
+2. **Request**: Use voice or text input to send a task to AHDA’s server.
+3. **Process**: AHDA analyzes the prompt and takes a screenshot of your PC. Using AI, it generates a solution.
+4. **Execute**: Your PC runs the generated code, completing the task and sending a response.
 
 ---
 
-## External Programs Required
-- pytesseract
+## Stay Tuned 🔮
+We’re thrilled to launch AHDA in late 2024! Sign up for **beta testing** and stay connected for exciting updates.
 
-**Stay connected and be among the first to experience AHDA!**
+---
+
+## Requirements ⚙️
+To run AHDA, you’ll need:
+- **pytesseract** for image processing
+- **Python** (latest version)
+
+**Don’t miss out on the future of digital assistance!**
