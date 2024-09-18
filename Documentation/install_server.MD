@@ -46,6 +46,8 @@ Currently, the official server is not yet available. This feature will be added 
 
 3. **Update Config**:
    Open the `config.json` file inside the server folder and update it to your needs
-   
+   - You need to put in your [OPENAI Api Key](https://platform.openai.com/settings/profile?tab=api-keys) inside       the config
+   - Remember to put in a few dollars since you might not be able to use the OpenAI Models otherwise
+
 3. **Start the Server**:  
    Launch the server by running `start.bat`.
