@@ -3,7 +3,7 @@
 
 https://github.com/user-attachments/assets/984ba96d-ad03-4097-9d47-fe8af3b863b8
 
-### Coming in Late 2024 🚀
+### Coming in Late 2024 (for Windows) 🚀
 
 **Meet AHDA** – your future-proof, voice-controlled **Open Source** digital assistant. AHDA integrates cutting-edge AI to help you manage your computer effortlessly from anywhere in the world, all through a sleek web interface.
 
