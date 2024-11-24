@@ -1,3 +1,6 @@
+###Join our [Discord](https://discord.gg/eUdJ5xdw8Q) now!
+# We will post updates, sneak peeks and more there
+
 
 # AHDA: Actually Helpful Digital Assistant 🌐🗣️
 
