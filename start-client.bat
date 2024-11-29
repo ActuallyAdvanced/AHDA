@@ -13,7 +13,23 @@ echo ╚════════════════════════
 :: Function to check if a file exists (no direct function for command existence in .bat)
 if not exist "Client\config\config.json" (
     echo Server configuration not found!
-    echo Please run the server setup script first.
+    echo Please enter the server domain (eg. https://server.domain.com):
+    set /p server_domain=
+    echo Please enter a password:
+    set /p password=
+    echo Writing to config.json...
+    
+    :: Create config directory if it doesn't exist
+    if not exist "Client\config" mkdir "Client\config"
+    
+    :: Write to config.json using echo with proper escaping
+    (
+        echo {
+        echo     "server_url": "%server_domain%",
+        echo     "client_password": "%password%"
+        echo }
+    ) > "Client\config\config.json"
+
     exit /b 1
 )
 

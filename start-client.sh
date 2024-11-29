@@ -17,6 +17,12 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
+#check if with sudo
+if [ "$EUID" -ne 0 ]; then
+    echo -e "${RED}Please run this script with sudo.${NC}"
+    exit 1
+fi
+
 # Function to install Python dependencies
 install_python_deps() {
     echo "Creating Python virtual environment..."
@@ -28,8 +34,14 @@ install_python_deps() {
 # Verify server configuration
 if [ ! -f Client/config/config.json ]; then
     echo -e "${RED}Server configuration not found!${NC}"
-    echo "Please run the server setup script first."
-    exit 1
+    echo -e "${YELLOW}Please enter the server domain (eg. https://server.domain.com):${NC}"
+    read server_domain
+    echo -e "${YELLOW}Please enter a password:${NC}"
+    read password
+    #write to config.json
+    echo -e "${GREEN}Writing to config.json...${NC}"
+    echo -e "{\n\t\"server_url\": \"$server_domain\",\n\t\"client_password\": \"$password\"\n}" > Client/config/config.json
+
 fi
 
 # Install Python dependencies

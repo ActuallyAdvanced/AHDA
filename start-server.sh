@@ -12,8 +12,6 @@ echo -e "${BLUE}╔════════════════════�
 echo -e "${BLUE}║         Server Setup and Execution         ║${NC}"
 echo -e "${BLUE}╚════════════════════════════════════════════╝${NC}"
 
-sudo npm install -g nodemon
-
 # Function to check if a command exists
 command_exists() {
     command -v "$1" >/dev/null 2>&1
@@ -134,7 +132,7 @@ setup_ngrok
 
 # Start server
 echo -e "${GREEN}Starting Server...${NC}"
-cd Server && nodemon index.js &
+cd Server && sudo npm install -g nodemon &&nodemon index.js &
 SERVER_PID=$!
 
 # Trap signals to clean up
