@@ -1,4 +1,4 @@
-### Coming in late 2024 (for MacOS and Windows with source code) 🚀
+### Coming in the 11.12. for MacOS and Windows (with source code) 🚀
 
 # AHDA: Actually Helpful Digital Assistant 🌐🗣️
 ---
