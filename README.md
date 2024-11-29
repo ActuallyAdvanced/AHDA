@@ -4,7 +4,7 @@
 https://github.com/user-attachments/assets/90f36735-4672-4be5-b877-2c164f332a5e
 
 
-# Join our [Discord](https://discord.gg/eUdJ5xdw8Q) now for updates and exclusive content!
+# Join our [Discord](https://discord.gg/eUdJ5xdw8Q) for updates and exclusive content!
 
 ### Coming in late 2024 (for MacOS and Windows with source code) 🚀
 
@@ -14,15 +14,22 @@ https://github.com/user-attachments/assets/90f36735-4672-4be5-b877-2c164f332a5e
 
 ## Features ✨
 - 🌍 **Remote Control**: Manage your PC from anywhere via a web interface.
-- 🎤 **Voice Activation**: Issue hands-free voice commands for total control.
+- 🎤 **Voice Activation**: Issue voice commands for total control.
 - 💼 **AI-Powered Automation**: Let AHDA handle complex tasks:
-  - Transfer files between devices
+  - Analyze files
   - Browse the web autonomously
   - Manage documents effortlessly
   - Build full development projects
+  - Interact with Apps
   - Send emails, and much more...
 
+
 ---
+
+## Do I need to host my own server? 🤔  
+Good news! 🎉 We're planning to release a hosted version of the product in 2025, complete with a simple one-click client setup. 🚀 Stay tuned for updates! 👀  
+
+--- 
 
 ## How It Works 🛠️
 
@@ -36,15 +43,15 @@ https://github.com/user-attachments/assets/90f36735-4672-4be5-b877-2c164f332a5e
 ## Installation Guide 🛠️
 
 1. **Set Up the Server**:  
-   Follow the [Server Installation Guide](https://github.com/ActuallyAdvanced/AHDA/blob/main/Documentation/install_server.MD) for detailed steps.
+   Simply execute the start-server.bat or start-server.sh
 
 2. **Set Up the Client**:  
-   Complete the [Client Installation Guide](https://github.com/ActuallyAdvanced/AHDA/blob/main/Documentation/install_client.MD) to get the client running.
+   Simply execute the start-client.bat or start-client.sh
 
 ---
 
 ## Stay Tuned 🔮
-We’re thrilled to launch AHDA in late 2024! Sign up for [**beta testing**](https://id2zv8k28gx.typeform.com/to/sbPF017g) and stay connected for exciting updates.
+We’re thrilled to launch AHDA in late 2024! Join our Discord for updates and beta testing.
 
 ---
 
