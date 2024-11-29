@@ -1,0 +1,14 @@
+python-socketio
+pyautogui
+pyautogui
+Pillow
+pyperclip
+keyboard
+mouse
+pywinauto
+auto-py-to-exe
+pywin32; sys_platform == 'win32'
+psutil
+websocket-client
+qrcode
+speedtest-cli
