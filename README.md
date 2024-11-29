@@ -1,9 +1,16 @@
+# Join our [Discord](https://discord.gg/eUdJ5xdw8Q) now!
+## We will post updates, sneak peeks and more there
+
+---
 
 # AHDA: Actually Helpful Digital Assistant 🌐🗣️
 
 https://github.com/user-attachments/assets/984ba96d-ad03-4097-9d47-fe8af3b863b8
 
-### Coming in Late 2024 (for Windows) 🚀
+### Coming in late 2024 - early 2025 (for MacOS and Windows) 🚀
+### Try out the [AHDA LITE](https://github.com/ActuallyAdvanced/OMI-AHDA) Version made for OMI.me devices in the meantime.
+
+### Source Code will be released once its out of beta.
 
 **Meet AHDA** – your future-proof, voice-controlled **Open Source** digital assistant. AHDA integrates cutting-edge AI to help you manage your computer effortlessly from anywhere in the world, all through a sleek web interface.
 
