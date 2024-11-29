@@ -1,6 +1,8 @@
 # AHDA: Actually Helpful Digital Assistant 🌐🗣️
 
-https://github.com/user-attachments/assets/984ba96d-ad03-4097-9d47-fe8af3b863b8
+
+https://github.com/user-attachments/assets/90f36735-4672-4be5-b877-2c164f332a5e
+
 
 # Join our [Discord](https://discord.gg/eUdJ5xdw8Q) now for updates and exclusive content!
 
