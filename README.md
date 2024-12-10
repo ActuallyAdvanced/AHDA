@@ -1,5 +1,3 @@
-### Coming in the 11.12. for MacOS and Windows (with source code) 🚀
-
 # AHDA: Actually Helpful Digital Assistant 🌐🗣️
 ---
 ![Preview](https://github.com/user-attachments/assets/ab0fb4cd-7c0a-4361-a4ce-a1c7ce37b3a9)
@@ -8,7 +6,6 @@ https://github.com/user-attachments/assets/90f36735-4672-4be5-b877-2c164f332a5e
 
 
 # Join our [Discord](https://discord.gg/eUdJ5xdw8Q) for updates and exclusive content!
-
 
 
 **Meet AHDA** – your future-proof, voice-controlled **Open Source** digital assistant. AHDA integrates cutting-edge AI to help you manage your computer effortlessly from anywhere in the world, all through a sleek web interface.
