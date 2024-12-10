@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>AHDA</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#1a1a1a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="Remote control your PC with AI">
+
+    <!-- PWA tags -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icons-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/icons/icons-512x512.png">
+    <link rel="apple-touch-icon" href="/icons/icons-192x192.png">
+
+    <!-- iOS specific tags -->
+    <meta name="apple-mobile-web-app-title" content="AHDA">
+    <link rel="apple-touch-startup-image" href="/icons/splash.png">
+
+    <script src="/socket.io/socket.io.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/interact.js/1.10.17/interact.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <div class="client-info" style="display: none;">
+        <input type="text" id="client-id" placeholder="Enter target client ID">
+    </div>
+
+    <!-- Add this notification banner right after body tag -->
+    <div class="notification-island" id="notification-island">
+        <div class="notification-content">
+            <span id="notification-text"></span>
+        </div>
+    </div>
+
+    <div id="file-drop-overlay" class="file-drop-overlay">
+        <div class="drop-message">
+            <h3>Analyze File</h3>
+            <p id="selected-file-name">Drop file or click to select</p>
+            <textarea id="file-analysis-instructions"
+                placeholder="Add custom instructions for analysis (optional)..."></textarea>
+            <button id="analyze-file-btn" disabled>Analyze File</button>
+            <div class="file-size-limit">Maximum file size: 10MB</div>
+        </div>
+    </div>
+
+    <div class="settings-controls">
+        <button class="theme-toggle" id="theme-toggle">
+            🌓
+        </button>
+        <button class="settings-toggle" id="settings-toggle">
+            ⚙️
+        </button>
+    </div>
+
+    <div class="dashboard mobile-hidden">
+        <div class="island" id="greeting-island" data-island-id="greeting">
+            <div class="island-header">
+                <span>👋 Welcome</span>
+                <div class="island-controls">
+                    <button class="minimize-btn">−</button>
+                </div>
+            </div>
+            <div class="island-content">
+                <div class="greeting-container">
+                    <div class="greeting-left">
+                        <h2 id="greeting-text">Good morning!</h2>
+                        <p id="current-time"></p>
+                    </div>
+                    <div class="greeting-right">
+                        <p id="full-date"></p>
+                        <p id="week-day"></p>
+                        <p id="battery-status">Battery: <span id="battery-level">--</span></p>
+                        <p id="last-communication">Last message: <span id="last-comm-time">Never</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="island" id="status-island" data-island-id="status">
+            <div class="island-header">
+                <span>🔌 Connection Status</span>
+                <div class="island-controls">
+                    <button class="minimize-btn">−</button>
+                </div>
+            </div>
+            <div class="island-content">
+                <div class="status-bar">
+                    <div class="status-indicator">
+                        <span>Server Status:</span>
+                        <div id="server-status" class="status-dot"></div>
+                    </div>
+                    <div class="status-indicator">
+                        <span>Client Status:</span>
+                        <div id="client-status" class="status-dot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="island" id="weather-island" data-island-id="weather">
+            <div class="island-header">
+                <span>🌤️ Weather</span>
+                <div class="island-controls">
+                    <button class="minimize-btn">−</button>
+                </div>
+            </div>
+            <div class="island-content">
+                <div id="weather-content">
+                    <div class="weather-main">
+                        <span id="weather-temp">--°C</span>
+                        <span id="weather-desc">Loading...</span>
+                    </div>
+                    <div class="weather-details">
+                        <span id="weather-humidity">Humidity: --%</span>
+                        <span id="weather-wind">Wind: -- km/h</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="island" id="chat-island" data-island-id="chat">
+            <div class="island-header">
+                <span>💬 Chat</span>
+                <div class="island-controls">
+                    <button class="minimize-btn">−</button>
+                </div>
+            </div>
+            <div class="island-content">
+                <div class="chat-container" id="chat-container">
+                    <div id="messages" class="messages"></div>
+                    <div class="input-container">
+
+                        <input type="text" id="message-input" autocomplete="off" placeholder="Type your message...">
+                        <button onclick="sendMessage()">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="island" id="system-island" data-island-id="system">
+            <div class="island-header">
+                <span>💻 System Resources</span>
+                <div class="island-controls">
+                    <button class="minimize-btn">−</button>
+                </div>
+            </div>
+            <div class="island-content">
+                <div class="resource-grid">
+                    <div class="resource-item">
+                        <span>CPU</span>
+                        <div class="progress-bar">
+                            <div id="cpu-usage" class="progress" style="width: 0%">0%</div>
+                        </div>
+                    </div>
+                    <div class="resource-item">
+                        <span>Memory</span>
+                        <div class="progress-bar">
+                            <div id="memory-usage" class="progress" style="width: 0%">0%</div>
+                        </div>
+                    </div>
+                    <div class="resource-item">
+                        <span>Disk</span>
+                        <div class="progress-bar">
+                            <div id="disk-usage" class="progress" style="width: 0%">0%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- microphone island -->
+        <div class="island" id="microphone-island" data-island-id="microphone"
+            style="max-width: 300px;min-width: 300px; max-height: 300px;min-height: 300px; ">
+            <!-- Content -->
+            <div class="island-content"
+                style="display:block; display:flex; justify-content:center; align-items:center;">
+                <button class="mic-button2 mobile-hidden" style="
+                    width: 50%;
+                    height: 50%;
+                    transform: none;
+                    margin-top: 100px;
+                "></button>
+            </div>
+        </div>
+
+        <!-- Todo Island -->
+        <div class="island" id="todo-island" data-island-id="todo" style="display: none;">
+            <div class="island-header">
+                <span>📝 To-Do List</span>
+                <div class="island-controls">
+                    <button class="minimize-btn">−</button>
+                </div>
+            </div>
+            <div class="island-content">
+                <div class="todo-container">
+                    <div class="todo-input">
+                        <input type="text" id="todo-input" placeholder="Add a new task...">
+                        <button onclick="addTodo()">Add</button>
+                    </div>
+                    <ul id="todo-list"></ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notes Island -->
+        <div class="island" id="notes-island" data-island-id="notes" style="display: none;">
+            <div class="island-header">
+                <span>📓 Notes</span>
+                <div class="island-controls">
+                    <button class="minimize-btn">−</button>
+                </div>
+            </div>
+            <div class="island-content">
+                <div class="notes-container">
+                    <textarea id="notes-content" placeholder="Write your notes here..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timer Island -->
+        <div class="island" id="timer-island" data-island-id="timer" style="display: none;">
+            <div class="island-header">
+                <span>⏲️ Timer</span>
+                <div class="island-controls">
+                    <button class="minimize-btn">−</button>
+                </div>
+            </div>
+            <div class="island-content">
+                <div class="timer-container">
+                    <div class="timer-display">00:00:00</div>
+                    <div class="timer-controls">
+                        <button onclick="startTimer()">Start</button>
+                        <button onclick="pauseTimer()">Pause</button>
+                        <button onclick="resetTimer()">Reset</button>
+                    </div>
+                    <input type="number" id="timer-minutes" placeholder="Minutes" min="0">
+                </div>
+            </div>
+        </div>
+
+        <!-- Memes Island -->
+        <div class="island" id="memes-island" data-island-id="memes" style="display: none;">
+            <div class="island-header">
+                <span>😂 Memes</span>
+                <div class="island-controls">
+                    <button class="minimize-btn">−</button>
+                </div>
+            </div>
+            <div class="island-content">
+                <div class="meme-container">
+                    <img id="meme-image" alt="Random Meme">
+                    <button onclick="loadNewMeme()">Next Meme</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quotes Island -->
+        <div class="island" id="quotes-island" data-island-id="quotes" style="display: none;">
+            <div class="island-header">
+                <span>💭 Quotes</span>
+                <div class="island-controls">
+                    <button class="minimize-btn">−</button>
+                </div>
+            </div>
+            <div class="island-content">
+                <div class="quote-container">
+                    <p id="quote-text"></p>
+                    <p id="quote-author"></p>
+                    <button onclick="loadNewQuote()">New Quote</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Network Speed Island -->
+        <div class="island" id="network-island" data-island-id="network" style="display: none;">
+            <div class="island-header">
+                <span>🌐 Network Speed</span>
+                <div class="island-controls">
+                    <button class="minimize-btn">−</button>
+                </div>
+            </div>
+            <div class="island-content">
+                <div class="network-container">
+                    <div class="speed-info">
+                        <p>Download: <span id="download-speed">-- Mbps</span></p>
+                        <p>Upload: <span id="upload-speed">-- Mbps</span></p>
+                        <p>Ping: <span id="ping-speed">-- ms</span></p>
+                    </div>
+                    <button onclick="testNetworkSpeed()">Test Speed</button>
+                </div>
+            </div>
+        </div>
+        <!-- Countdown Island -->
+        <div class="island" id="countdown-island" data-island-id="countdown" style="display: none;">
+            <div class="island-header">
+                <span>⏳ Countdown</span>
+                <div class="island-controls">
+                    <button class="minimize-btn">−</button>
+                </div>
+            </div>
+            <div class="island-content">
+                <div class="countdown-container">
+                    <input type="date" id="countdown-date">
+                    <p id="countdown-display"></p>
+                    <button onclick="setCountdown()">Set Date</button>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <!-- image island -->
+        <div class=" island" id="image-island" data-island-id="image" style="display: none; overflow: hidden;">
+            <div class="island-header">
+                <span>📸 Image</span>
+                <!-- ability to add base64 image -->
+                <img id="image-island-image" src="" alt="Image" style="width: 80%; height: 80%;">
+                <button class="close-image" onclick="document.getElementById('image-island').style.display = 'none';"
+                    id="close-image">Close</button>
+            </div>
+        </div>
+
+        <div class="island" id="research-island" data-island-id="research" style="display: none;">
+            <div class="island-header">
+                <span>🔍 Research Tasks</span>
+                <div class="island-controls">
+                    <button class="minimize-btn">−</button>
+                </div>
+            </div>
+            <div class="island-content">
+                <div class="research-container">
+                    <div class="research-input">
+                        <input type="text" id="research-input" style="width: 80%;"
+                            placeholder="Add a research topic...">
+                        <input type="number" id="research-page-count" style="width: 10%;" placeholder="Intensity"
+                            min="1" max="20">
+                        <button onclick="addResearchTask()">Add</button>
+                    </div>
+                    <div class="research-list" id="research-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Spotify Island -->
+        <div class="island" id="spotify-island" data-island-id="spotify">
+            <div class="island-header">
+                <span>🎵 Spotify</span>
+                <div class="island-controls">
+                    <button class="minimize-btn">−</button>
+                </div>
+            </div>
+            <div class="island-content">
+                <div class="spotify-container">
+                    <iframe id="spotify-iframe"
+                        src="https://open.spotify.com/embed/playlist/5KJDMJe9EJ7QRz8FG2MIpI?utm_source=generator"
+                        width="100%" height="380" frameBorder="0" allowfullscreen=""
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                        loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="mobile-header desktop-hidden">
+        <div class="mobile-greeting">
+            <div>
+                <h2 id="greeting-text-mobile">Good morning!</h2>
+                <p id="current-time-mobile"></p>
+            </div>
+            <div class="mobile-weather">
+                <span id="mobile-weather-temp">--°C</span>
+                <span id="mobile-weather-desc">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="mobile-chat desktop-hidden">
+        <div class="mobile-messages" id="mobile-messages"></div>
+        <!-- mobile image -->
+        <div class="mobile-image" id="mobile-image" style="display: none;">
+            <img id="mobile-image-image" src="" alt="Image" style="max-width: 100%; max-height: 100%;">
+            <button class="mobile-close-image" onclick="document.getElementById('mobile-image').style.display = 'none';"
+                id="mobile-close-image">Close</button>
+        </div>
+
+        <div class="mobile-input">
+            <input type="text" id="mobile-message-input" placeholder="Type your message...">
+            <button class="mobile-submit" id="mobile-submit">Send</button>
+
+        </div>
+    </div>
+
+    <button class="mic-button2 desktop-hidden" id="mic-button">
+
+    </button>
+    <script src="script.js"></script>
+
+    <script>
+        // JavaScript
+        function isMobileDevice() {
+            return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        }
+
+        function updateView() {
+            const isMobile = isMobileDevice(); // Adjust breakpoint as needed
+
+            // Select all elements with the '.mobile' or '.desktop' classes
+            const mobileElements = document.querySelectorAll('.mobile-hidden');
+            const desktopElements = document.querySelectorAll('.desktop-hidden');
+            const bothShown = document.querySelectorAll('.allshown');
+
+            bothShown.forEach(element => {
+                element.style.display = 'block';
+            });
+            mobileElements.forEach(element => {
+                element.style.display = isMobile ? 'none' : 'block';
+            });
+            desktopElements.forEach(element => {
+                element.style.display = isMobile ? 'block' : 'none';
+            });
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateView();
+            window.addEventListener('resize', updateView);
+        });
+
+
+
+
+    </script>
+
+    <div class="settings-modal" id="settings-modal">
+        <div class="settings-content">
+            <h2>Settings</h2>
+
+            <!-- Islands Visibility Section -->
+            <div class="settings-section">
+                <h3>Islands Visibility</h3>
+                <div class="islands-toggle-grid">
+                    <div class="toggle-item">
+                        <label for="toggle-greeting">Welcome</label>
+                        <input type="checkbox" id="toggle-greeting" data-island="greeting" checked>
+                    </div>
+                    <div class="toggle-item">
+                        <label for="toggle-status">Connection Status</label>
+                        <input type="checkbox" id="toggle-status" data-island="status" checked>
+                    </div>
+                    <div class="toggle-item">
+                        <label for="toggle-weather">Weather</label>
+                        <input type="checkbox" id="toggle-weather" data-island="weather" checked>
+                    </div>
+                    <div class="toggle-item">
+                        <label for="toggle-chat">Chat</label>
+                        <input type="checkbox" id="toggle-chat" data-island="chat" checked>
+                    </div>
+                    <div class="toggle-item">
+                        <label for="toggle-system">System Resources</label>
+                        <input type="checkbox" id="toggle-system" data-island="system" checked>
+                    </div>
+                    <div class="toggle-item">
+                        <label for="toggle-microphone">Microphone</label>
+                        <input type="checkbox" id="toggle-microphone" data-island="microphone" checked>
+                    </div>
+                    <div class="toggle-item">
+                        <label for="toggle-todo">To-Do List</label>
+                        <input type="checkbox" id="toggle-todo" data-island="todo">
+                    </div>
+                    <div class="toggle-item">
+                        <label for="toggle-notes">Notes</label>
+                        <input type="checkbox" id="toggle-notes" data-island="notes">
+                    </div>
+                    <div class="toggle-item">
+                        <label for="toggle-timer">Timer</label>
+                        <input type="checkbox" id="toggle-timer" data-island="timer">
+                    </div>
+                    <div class="toggle-item">
+                        <label for="toggle-memes">Memes</label>
+                        <input type="checkbox" id="toggle-memes" data-island="memes">
+                    </div>
+                    <div class="toggle-item">
+                        <label for="toggle-quotes">Quotes</label>
+                        <input type="checkbox" id="toggle-quotes" data-island="quotes">
+                    </div>
+                    <div class="toggle-item">
+                        <label for="toggle-network">Network Speed</label>
+                        <input type="checkbox" id="toggle-network" data-island="network">
+                    </div>
+
+                    <div class="toggle-item">
+                        <label for="toggle-countdown">Countdown</label>
+                        <input type="checkbox" id="toggle-countdown" data-island="countdown">
+                    </div>
+                    <div class="toggle-item">
+                        <label for="toggle-research">Research Tasks</label>
+                        <input type="checkbox" id="toggle-research" data-island="research">
+                    </div>
+                    <div class="toggle-item">
+                        <label for="toggle-spotify">Spotify</label>
+                        <input type="checkbox" id="toggle-spotify" data-island="spotify">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Existing Settings Sections -->
+            <div class="settings-section">
+                <label for="speech-language">Language</label>
+                <select id="speech-language">
+                    <option value="en-US">English (US)</option>
+                    <option value="es-ES">Español (España)</option>
+                    <option value="fr-FR">Français (France)</option>
+                    <option value="de-DE">Deutsch (Deutschland)</option>
+                    <option value="it-IT">Italiano (Italia)</option>
+                    <option value="pt-BR">Português (Brasil)</option>
+                    <option value="ja-JP">日本語 (日本)</option>
+                    <option value="ko-KR">한국어 (대한민국)</option>
+                    <option value="zh-CN">中文 (中国)</option>
+                </select>
+            </div>
+            <div class="settings-section">
+                <label for="mobile-manual-input">Manual Input on Mobile</label>
+                <select id="mobile-manual-input">
+                    <option value="disabled">Disabled</option>
+                    <option value="enabled">Enabled</option>
+                </select>
+            </div>
+            <button class="settings-close">Close</button>
+        </div>
+    </div>
+
+    <div id="file-drop-overlay" class="file-drop-overlay">
+        <div class="drop-message">
+            <h3>Drop File to Analyze</h3>
+            <p id="selected-file-name">No file selected</p>
+            <textarea id="file-analysis-instructions"
+                placeholder="Enter any specific instructions for analysis (optional)"></textarea>
+            <button id="analyze-file-btn" disabled>Analyze File</button>
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>

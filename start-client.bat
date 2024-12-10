@@ -1,54 +1,59 @@
 @echo off
-:: ANSI color codes are not natively supported in Windows Command Prompt. 
-:: However, you can use external tools or Windows Terminal for similar effects.
-
-:: Clear the screen
+REM ANSI color codes are not natively supported in cmd; using plain text or alternative methods.
+REM Clearing the screen
 cls
 
-:: Print the header
-echo ╔════════════════════════════════════════════╗
-echo ║            Client Setup and Execution      ║
-echo ╚════════════════════════════════════════════╝
-
-:: Function to check if a file exists (no direct function for command existence in .bat)
-if not exist "Client\config\config.json" (
-    echo Server configuration not found!
-    echo Please enter the server domain (eg. https://server.domain.com):
-    set /p server_domain=
-    echo Please enter a password:
-    set /p password=
-    echo Writing to config.json...
-    
-    :: Create config directory if it doesn't exist
-    if not exist "Client\config" mkdir "Client\config"
-    
-    :: Write to config.json using echo with proper escaping
-    (
-        echo {
-        echo     "server_url": "%server_domain%",
-        echo     "client_password": "%password%"
-        echo }
-    ) > "Client\config\config.json"
-
+echo Client Setup and Execution
+REM Check if Python is installed
+where python >nul 2>&1
+if %errorlevel% neq 0 (
+    echo Python is not installed. Please install Python and try again.
     exit /b 1
 )
 
-:: Install Python dependencies
+
+REM Check if config.json exists
+if not exist Client\config\config.json (
+    echo Server configuration not found!
+    set /p server_domain=Please enter the server domain (e.g., https://server.domain.com):
+    set /p password=Please enter a password:
+
+    echo Writing to config.json...
+    mkdir Client\config >nul 2>&1
+    echo { > Client\config\config.json
+    echo     "server_url": "%server_domain%", >> Client\config\config.json
+    echo     "client_password": "%password%" >> Client\config\config.json
+    echo } >> Client\config\config.json
+)
+
+REM Install Python dependencies
 echo Creating Python virtual environment...
 python -m venv Client\venv
-call Client\venv\Scripts\activate.bat
-pip install -r Client\requirements.txt
+if %errorlevel% neq 0 (
+    echo Failed to create virtual environment. Ensure Python is installed and try again.
+    exit /b 1
+)
 
-:: Start client
+call Client\venv\Scripts\activate
+if %errorlevel% neq 0 (
+    echo Failed to activate the virtual environment.
+    exit /b 1
+)
+
+pip install -r Client\requirements.txt
+if %errorlevel% neq 0 (
+    echo Failed to install dependencies. Check the requirements.txt file and try again.
+    exit /b 1
+)
+
+REM Start the client
 echo Starting Client...
 cd Client
-call venv\Scripts\activate.bat
-start python main.py
+call venv\Scripts\activate
+start /b python main.py
 
-:: Wait for the client process (Windows batch lacks direct process wait)
-echo Press any key to stop the client.
-pause
-taskkill /IM python.exe /F >nul 2>&1
-
-:: Cleanup
-exit /b 0
+REM Wait for user to terminate the script
+echo Press Ctrl+C to terminate the Client.
+:loop
+timeout /t 1 >nul
+goto loop

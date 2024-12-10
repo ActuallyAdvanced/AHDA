@@ -1,0 +1,1536 @@
+:root {
+    /* Light theme variables */
+    --bg-primary: #f5f5f5;
+    --bg-secondary: #ffffff;
+    --text-primary: #212529;
+    --text-secondary: #666666;
+    --border-color: #eaeaea;
+    --shadow-color: rgba(0, 0, 0, 0.08);
+    --accent-color: #007bff;
+    --accent-hover: #0056b3;
+    --success-color: #28a745;
+    --error-color: #dc3545;
+    --warning-color: #ffc107;
+    --chat-bg: #f8f9fa;
+    --message-ai-bg: #e9ecef;
+    --message-ai-text: #212529;
+    --island-header-text: #212529;
+}
+
+[data-theme="dark"] {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --text-primary: #ffffff;
+    --text-secondary: #b0b0b0;
+    --border-color: #404040;
+    --shadow-color: rgba(0, 0, 0, 0.2);
+    --accent-color: #0d6efd;
+    --accent-hover: #0b5ed7;
+    --success-color: #198754;
+    --error-color: #dc3545;
+    --warning-color: #ffc107;
+    --chat-bg: #1e1e1e;
+    --message-ai-bg: #383838;
+    --message-ai-text: #ffffff;
+    --island-header-text: #000000;
+
+}
+
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s, color 0.3s;
+    overscroll-behavior-y: none;
+    /* Prevents pull-to-refresh */
+    -webkit-touch-callout: none;
+    /* Prevents long-press menu on iOS */
+    -webkit-user-select: none;
+    /* Prevents text selection */
+    user-select: none;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.status-bar {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: var(--bg-secondary);
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #dc3545;
+    transition: background-color 0.3s;
+}
+
+.status-dot.online {
+    background: #28a745;
+}
+
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 20px);
+    /* Account for padding */
+    position: relative;
+    overflow: hidden;
+}
+
+.client-info {
+    margin-bottom: 20px;
+}
+
+.messages {
+    flex: 1;
+    min-height: 100px;
+    height: calc(100% - 80px);
+    overflow-y: auto;
+    margin-bottom: 10px;
+    padding: 20px;
+    padding-bottom: 40px;
+    background: var(--chat-bg);
+    border-radius: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) transparent;
+}
+
+.messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+.messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.messages::-webkit-scrollbar-thumb {
+    background-color: var(--border-color);
+    border-radius: 4px;
+}
+
+.message {
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    max-width: 80%;
+    animation: messageSlide 0.3s ease-out;
+}
+
+@keyframes messageSlide {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.message.user {
+    background: #007bff;
+    color: white;
+    margin-left: auto;
+}
+
+.message.ai {
+    background: var(--message-ai-bg);
+    color: var(--message-ai-text);
+}
+
+.message.analysis {
+    background: #d4edda;
+    color: #155724;
+}
+
+.message.error {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.message.warning {
+    background: #ffeeba;
+    color: #856404;
+}
+
+.input-container {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    background: var(--chat-bg);
+    border-top: 1px solid var(--border-color);
+    margin-top: auto;
+    display: flex;
+    gap: 10px;
+    min-height: 60px;
+}
+
+input {
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 14px;
+    flex: 1;
+    -webkit-user-select: text;
+    user-select: text;
+    min-height: 40px;
+    max-height: 100%;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 12px 24px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+.message.streaming {
+    border-left: 3px solid #007bff;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        border-left-color: #007bff;
+    }
+
+    50% {
+        border-left-color: #0056b3;
+    }
+
+    100% {
+        border-left-color: #007bff;
+    }
+}
+
+.dashboard {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    padding: 20px;
+    background: var(--bg-primary);
+}
+
+.island {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px var(--shadow-color);
+    overflow: hidden;
+    touch-action: none;
+    user-select: none;
+    will-change: transform;
+    transform-origin: center center;
+}
+
+.island:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.island:not(.dragging) {
+    transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.2s ease,
+        background-color 0.3s ease;
+}
+
+.island.dragging {
+    cursor: grabbing !important;
+    filter: brightness(1.05);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
+    z-index: 1000;
+}
+
+[data-theme="dark"] .island {
+    background: rgba(45, 45, 45, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.island-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid #eaeaea;
+    cursor: move;
+    color: text-primary;
+}
+
+.island-controls button {
+    background: none;
+    border: none;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.island-controls button:hover {
+    background: #f5f5f5;
+}
+
+.island-content {
+    height: calc(100% - 50px);
+    overflow: hidden;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.weather-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+#weather-temp {
+    font-size: 2.5em;
+    font-weight: 600;
+}
+
+.weather-details {
+    display: flex;
+    justify-content: space-around;
+    color: #666;
+}
+
+.island.minimized .island-content {
+    display: none;
+}
+
+.island.minimized {
+    height: auto;
+}
+
+/* Resource Island Styles */
+.resource-grid {
+    display: grid;
+    gap: 15px;
+}
+
+.resource-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.resource-item span {
+    font-weight: 500;
+}
+
+.progress-bar {
+    background: #f0f0f0;
+    border-radius: 6px;
+    height: 20px;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+}
+
+.progress {
+    background: linear-gradient(90deg, #4CAF50, #45a049);
+    height: 100%;
+    transition: width 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+    min-width: 30px;
+}
+
+/* Calendar Styles */
+.current-date {
+    font-size: 1.2em;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.event {
+    display: flex;
+    gap: 10px;
+    padding: 8px;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.event-time {
+    color: #666;
+    font-size: 0.9em;
+}
+
+/* Notes Styles */
+.notes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#quick-notes {
+    width: 100%;
+    min-height: 150px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.notes-controls {
+    display: flex;
+    gap: 10px;
+}
+
+/* Timer Styles */
+.timer-container {
+    text-align: center;
+}
+
+#timer-display {
+    font-size: 2.5em;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.timer-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+/* Resize handle style */
+.island::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 15px;
+    height: 15px;
+    cursor: se-resize;
+    background:
+        linear-gradient(45deg, transparent 50%, #ddd 50%),
+        linear-gradient(-45deg, transparent 50%, #ddd 50%);
+    background-size: 8px 8px;
+    background-position: right bottom;
+    background-repeat: no-repeat;
+}
+
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 20px);
+    /* Account for padding */
+}
+
+.messages {
+    flex: 1;
+    min-height: 100px;
+    height: calc(100% - 100px);
+    /* Account for input and client info */
+}
+
+.input-container {
+    margin-top: auto;
+}
+
+
+
+/* Mobile Header */
+.mobile-header {
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-secondary);
+    padding: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    height: auto;
+    min-height: 100px;
+}
+
+.mobile-greeting {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+    padding: 0 10px;
+}
+
+.mobile-greeting h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.mobile-weather {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    background: var(--bg-secondary);
+    border-radius: 10px;
+    color: var(--text-primary);
+}
+
+/* Mobile Chat Container */
+.mobile-chat {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 120px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--chat-bg);
+    color: var(--text-primary);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.mobile-messages {
+    flex: 1;
+    padding: 20px 15px;
+    padding-bottom: 320px;
+    padding-top: 20px;
+    margin-top: 10px;
+    min-height: min-content;
+}
+
+.mobile-input {
+    position: fixed;
+    bottom: 320px;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    background: var(--bg-secondary);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    box-sizing: border-box;
+}
+
+.mobile-input input {
+    width: 100%;
+    height: 100px;
+    padding: 15px 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 15px;
+    font-size: 18px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    box-sizing: border-box;
+}
+
+.mobile-submit {
+    height: 50px;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    background: var(--accent-color);
+    color: white;
+}
+
+.mic-button2 {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: #007bff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    color: white;
+    font-size: 50px;
+    animation: spin 2s linear infinite;
+    width: 170px;
+    height: 170px;
+    box-shadow:
+        inset 0 0 50px #fff,
+        inset 20px 0 60px violet,
+        inset -20px 0 60px #0000ff,
+        inset 20px 0 300px #ee82ee,
+        inset -20px 0 300px blue,
+        0 0 50px #fff,
+        -10px 0 60px violet,
+        10px 0 60px blue;
+}
+
+@keyframes spin {
+    0% {
+        transform: translateX(-50%) rotate(0deg);
+    }
+
+    100% {
+        transform: translateX(-50%) rotate(360deg);
+    }
+}
+
+.mic-button2.hover {
+    box-shadow:
+        inset 0 0 50px #fff,
+        inset 20px 0 60px pink,
+        inset -20px 0 60px cyan,
+        inset 20px 0 300px pink,
+        inset -20px 0 300px cyan,
+        0 0 50px #fff,
+        -10px 0 60px pink,
+        10px 0 60px cyan;
+}
+
+
+.mic-button2.recording {
+    box-shadow:
+        inset 0 0 50px #fff,
+        inset 20px 0 60px red,
+        inset -20px 0 60px firebrick,
+        inset 20px 0 300px red,
+        inset -20px 0 300px firebrick,
+        0 0 50px #fff,
+        -10px 0 60px red,
+        10px 0 60px firebrick;
+}
+
+
+
+/* Hide mobile elements on desktop */
+.mobile-header,
+.mobile-chat,
+.mic-button2 {
+    display: none;
+}
+
+/* Add new theme toggle button */
+.settings-controls {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+}
+
+.theme-toggle,
+.settings-toggle {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 20px;
+    position: relative;
+}
+
+.theme-toggle:hover,
+.settings-toggle:hover {
+    transform: scale(1.1);
+    background: var(--bg-primary);
+}
+
+/* Remove the old fixed positioning for theme-toggle */
+.theme-toggle {
+    position: relative;
+    top: auto;
+    right: auto;
+}
+
+@media (max-width: 768px) {
+    .settings-controls {
+        top: auto;
+        bottom: 20px;
+    }
+}
+
+.notification-island {
+    position: fixed;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 12px 24px;
+    border-radius: 20px;
+    z-index: 1000;
+    display: none;
+    animation: slideDown 0.3s ease-out;
+    min-width: 200px;
+    max-width: 50%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    opacity: 1;
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+.notification-island.hiding {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+}
+
+.notification-content {
+    color: white;
+    text-align: center;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateX(-50%) translateY(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Only apply transition when not being dragged */
+.island:not(.dragging) {
+    transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.2s ease,
+        background-color 0.3s ease;
+}
+
+/* Update swoosh animation styles */
+.island.dragging {
+    cursor: grabbing !important;
+    filter: brightness(1.05);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
+}
+
+.island.dragging::after {
+    content: '✨';
+    position: absolute;
+    font-size: 20px;
+    pointer-events: none;
+    z-index: 1000;
+    animation: trailEffect 0.8s linear infinite;
+    text-shadow: 0 0 10px var(--accent-color);
+}
+
+@keyframes trailEffect {
+    0% {
+        transform: translate(-10px, -10px) scale(1);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translate(-50px, -50px) scale(0.2);
+        opacity: 0;
+    }
+}
+
+/* Add glass effect to islands */
+.island {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+[data-theme="dark"] .island {
+    background: rgba(45, 45, 45, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Add hover effect */
+.island:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Add particle trail */
+.particle {
+    position: fixed;
+    pointer-events: none;
+    background: var(--accent-color);
+    border-radius: 50%;
+    opacity: 0.6;
+    z-index: 1000;
+}
+
+/* Add snap guidelines */
+.snap-guideline {
+    position: absolute;
+    background: var(--accent-color);
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 1000;
+    transition: opacity 0.2s;
+}
+
+.snap-guideline.horizontal {
+    height: 2px;
+    left: 0;
+    right: 0;
+}
+
+.snap-guideline.vertical {
+    width: 2px;
+    top: 0;
+    bottom: 0;
+}
+
+.island.minimized {
+    height: auto !important;
+    min-height: 0 !important;
+}
+
+.island.minimized::after {
+    display: none;
+}
+
+.minimize-btn {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 18px;
+    padding: 0 8px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.minimize-btn:hover {
+    color: var(--accent-color);
+    background: none;
+}
+
+/* Add after the theme-toggle styles (around line 596) */
+.settings-controls {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+}
+
+.settings-toggle {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 20px;
+}
+
+.settings-toggle:hover {
+    transform: scale(1.1);
+    background: var(--bg-primary);
+}
+
+.settings-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    backdrop-filter: blur(5px);
+}
+
+.settings-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--bg-secondary);
+    padding: 30px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 20px var(--shadow-color);
+}
+
+.settings-content h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.settings-section {
+    margin: 10px 0;
+}
+
+.settings-section:first-of-type {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+    margin-bottom: 20px;
+    max-height: 50vh;
+}
+
+.islands-toggle-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
+    margin: 10px 0;
+}
+
+.toggle-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.settings-section:first-of-type::-webkit-scrollbar {
+    width: 8px;
+}
+
+.settings-section:first-of-type::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+    border-radius: 4px;
+}
+
+.settings-section:first-of-type::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+.settings-section:first-of-type::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+.settings-section:not(:first-of-type) {
+    border-top: 1px solid var(--border-color);
+    padding-top: 15px;
+}
+
+.settings-close {
+    margin-top: 15px;
+}
+
+@media (max-width: 768px) {
+    .settings-content {
+        width: 95%;
+        max-height: 85vh;
+        padding: 20px;
+    }
+
+    .islands-toggle-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
+
+/* Hide address bar */
+@media screen and (display-mode: standalone) {
+    html {
+        height: 100vh;
+    }
+}
+
+.settings-section {
+    margin-bottom: 20px;
+}
+
+.settings-section:last-child {
+    margin-bottom: 0;
+}
+
+.mobile-input {
+    display: none;
+    /* Hidden by default */
+}
+
+/* Add responsive adjustments for mobile */
+@media (max-width: 768px) {
+    .mic-button2 {
+        width: 180px;
+        /* Smaller size for mobile */
+        height: 180px;
+        /* Keep equal to width */
+        bottom: 30px;
+        /* Adjust position */
+    }
+}
+
+.file-drop-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.file-drop-overlay.active {
+    display: flex;
+}
+
+.drop-message {
+    background: var(--island-bg);
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.drop-message h3 {
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+#selected-file-name {
+    margin: 1rem 0;
+    color: var(--text-color);
+    font-size: 0.9em;
+}
+
+#file-analysis-instructions {
+    width: 100%;
+    min-height: 100px;
+    margin: 1rem 0;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--input-bg);
+    color: var(--text-color);
+    resize: vertical;
+}
+
+#analyze-file-btn {
+    padding: 0.75rem 1.5rem;
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+    margin: 1rem 0;
+}
+
+#analyze-file-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.file-size-limit {
+    color: var(--text-secondary);
+    font-size: 0.8em;
+    margin-top: 0.5rem;
+}
+
+/* Todo Island */
+.todo-container {
+    padding: 10px;
+}
+
+.todo-input {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+#todo-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.todo-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.todo-item.completed {
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+
+/* Notes Island */
+.notes-container {
+    height: 100%;
+    padding: 10px;
+}
+
+#notes-content {
+    width: 100%;
+    height: calc(100% - 20px);
+    resize: none;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+/* Timer Island */
+.timer-container {
+    text-align: center;
+    padding: 10px;
+}
+
+.timer-display {
+    font-size: 2em;
+    margin: 10px 0;
+}
+
+.timer-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+/* Memes Island */
+.meme-container {
+    text-align: center;
+    padding: 10px;
+}
+
+#meme-image {
+    max-width: 100%;
+    max-height: 300px;
+    margin-bottom: 10px;
+}
+
+/* Quotes Island */
+.quote-container {
+    padding: 15px;
+    text-align: center;
+}
+
+#quote-text {
+    font-style: italic;
+    margin-bottom: 10px;
+}
+
+#quote-author {
+    font-weight: bold;
+}
+
+/* Network Speed Island */
+.network-container {
+    padding: 15px;
+}
+
+.speed-info {
+    margin-bottom: 15px;
+}
+
+/* Date & Battery Island */
+.date-battery-container {
+    padding: 10px;
+    text-align: center;
+}
+
+/* Countdown Island */
+.countdown-container {
+    padding: 15px;
+    text-align: center;
+}
+
+#countdown-display {
+    font-size: 1.2em;
+    margin: 10px 0;
+}
+
+/* Islands Toggle Menu */
+.islands-toggle-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.toggle-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+}
+
+.toggle-item label {
+    cursor: pointer;
+    flex-grow: 1;
+}
+
+.toggle-item input[type="checkbox"] {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+}
+
+.settings-section h3 {
+    margin: 15px 0 10px;
+    color: var(--text-primary);
+    font-size: 1.1em;
+}
+
+.greeting-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.greeting-left {
+    flex: 1;
+}
+
+.greeting-right {
+    text-align: right;
+    padding: 10px;
+    background: var(--bg-primary);
+    border-radius: 8px;
+    min-width: 200px;
+}
+
+.greeting-right p {
+    margin: 5px 0;
+    color: var(--text-secondary);
+}
+
+#full-date {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+#battery-status {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Research Island */
+.research-container {
+    padding: 10px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.research-input {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+#research-input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.research-input button {
+    padding: 8px 16px;
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.research-input button:hover {
+    background: var(--accent-color-hover);
+}
+
+.research-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.research-item {
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 8px;
+}
+
+.research-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.research-item-title {
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: var(--title-size, 1em);
+    max-width: 70%;
+}
+
+.research-item-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.research-item-notes {
+    font-size: 0.9em;
+    color: var(--text-secondary);
+    margin-top: 8px;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+}
+
+.research-progress {
+    height: 4px;
+    background: #eee;
+    border-radius: 2px;
+    margin: 8px 0;
+    overflow: hidden;
+}
+
+.research-progress-bar {
+    height: 100%;
+    background: var(--accent-color);
+    transition: width 0.3s ease;
+}
+
+#research-page-count {
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 14px;
+    margin-right: 8px;
+}
+
+/* Update the chat container styles */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 20px);
+    /* Account for padding */
+    position: relative;
+    overflow: hidden;
+}
+
+.messages {
+    flex: 1;
+    min-height: 100px;
+    height: calc(100% - 80px);
+    /* Reduced from 100px to give more space for input */
+    overflow-y: auto;
+    margin-bottom: 10px;
+    padding: 20px;
+    padding-bottom: 40px;
+    background: var(--chat-bg);
+    border-radius: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) transparent;
+}
+
+.input-container {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    background: var(--chat-bg);
+    border-top: 1px solid var(--border-color);
+    margin-top: auto;
+    display: flex;
+    gap: 10px;
+    min-height: 60px;
+}
+
+/* Add these new styles to ensure proper island content layout */
+.island-content {
+    height: calc(100% - 50px);
+    /* Account for header height */
+    overflow: hidden;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Update chat container within island */
+.island .chat-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 20px);
+    /* Account for padding */
+}
+
+.island .messages {
+    flex: 1;
+    min-height: 100px;
+    height: calc(100% - 100px);
+    /* Account for input and client info */
+}
+
+.island .input-container {
+    margin-top: auto;
+}
+
+/* Add space after the last message */
+.message:last-child {
+    margin-bottom: 20px;
+}
+
+.demo-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000;
+    font-weight: bold;
+    transition: transform 0.2s;
+}
+
+.demo-button:hover {
+    transform: scale(1.05);
+}
+
+/* System Resources Styles */
+.resource-grid {
+    display: grid;
+    gap: 10px;
+}
+
+.resource-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.progress-bar {
+    background: var(--bg-primary);
+    border-radius: 8px;
+    height: 24px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    position: relative;
+}
+
+.progress {
+    height: 100%;
+    transition: width 0.5s ease-out, background 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    position: relative;
+    min-width: 40px;
+}
+
+/* Add smooth transition for color changes */
+#cpu-usage,
+#memory-usage,
+#disk-usage {
+    transition: width 0.5s ease-out, background 0.3s ease;
+}
+
+.spotify-container {
+    width: 100%;
+    height: 380px;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.spotify-container iframe {
+    border-radius: 12px;
+}
+
+#spotify-island {
+    min-width: 300px;
+    min-height: 450px;
+    resize: both;
+}
+
+#last-communication {
+    font-size: 0.9em;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+#last-comm-time {
+    font-weight: 500;
+}
