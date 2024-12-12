@@ -53,7 +53,7 @@ if errorlevel 1 (
 echo Would you like to use a static domain? (y/n)
 set /p use_static=
 if /i "!use_static!"=="y" (
-    echo Please enter your static domain (e.g., your-domain.ngrok.io):
+    echo "Please enter your static domain (e.g., your-domain.ngrok.io)":
     set /p static_domain=
     start /B ngrok http --domain=!static_domain! 3000 --log=ngrok.log >nul
     set "ngrok_url=https://!static_domain!"
@@ -68,12 +68,12 @@ if "!ngrok_url!"=="" (
     exit /b 1
 )
 
-echo Ngrok tunnel established at: !ngrok_url!
+echo "Ngrok tunnel established at: !ngrok_url!"
 set "NGROK_URL=!ngrok_url!"
 
 mkdir Client\config >nul 2>&1
 echo {"server_url": "!NGROK_URL!"} > Client\config\config.json
-echo Saved ngrok URL to Client\config\config.json
+echo "Saved ngrok URL to Client\config\config.json"
 :ngrok_setup_done
 
 :: Server setup
@@ -85,13 +85,7 @@ if not exist ".env" (
     echo OPENAI_API_KEY=!api_key! > .env
 )
 npm install
-cd ..
 
 :: Start server
 echo Starting Server...
-cd Server
-start /B node index.js
-cd ..
-
-pause
-exit /b 0
+node index.js
